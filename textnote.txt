@@ -1,0 +1,4 @@
+Những điều cần lưu ý trước khi thực thi
+1. Check xem tổ chức Do Corp đã được tạo hay chưa
+2. Do Corp đã được mua sản phẩm fWorks chưa hoặc là gia hạn
+3. Tất cả các thao tác navigation đều nằm ở file Page/index.java
