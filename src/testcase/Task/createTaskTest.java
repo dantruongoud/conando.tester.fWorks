@@ -46,17 +46,15 @@ public class createTaskTest {
                     switch (noti) {
                         case "Bạn chưa nhập tiêu đề nhóm công việc!":
                             System.out.println(noti);
-                            System.out.println("PASSED");
-                            System.out.println("===================");
+                            index.passed();
                             break;
                         default:
                             noti = index.tagline();
                             if (noti.equals("Đã thêm nhóm công việc!")) {
                                 System.out.println(noti);
-                                System.out.println("PASSED");
-                                System.out.println("===================");
+                                index.passed();
                             } else {
-                                System.out.println("Tagline is not Displayed...");
+                                index.failed();
                             }
                             break;
                     }
