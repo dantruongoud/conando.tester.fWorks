@@ -14,7 +14,7 @@ public class createTaskPage {
     @FindBy(how = How.CSS, using = "a[class='has-text-info']")
     private List<WebElement> listWorks;
 
-    @FindBy(xpath = "//a[@class='has-text-grey'][contains(text(),'Công việc')]")
+    @FindBy(xpath = "//a[@class='has-text-black'][contains(.,'Công việc')]")
     public WebElement navigation_task;
 
     @FindBy(id = "plan_bubble")
@@ -22,6 +22,9 @@ public class createTaskPage {
 
     @FindBy(css = ".button.is-small.is-rounded.is-info")
     private WebElement createTask;
+
+    @FindBy(css = ".button.is-small.is-rounded.is-success")
+    private WebElement createWork;
 
     @FindBy(css = "input[placeholder='Nhập tiêu đề nhóm công việc...']")
     public WebElement titleTask;
@@ -34,11 +37,11 @@ public class createTaskPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void choseWorks(String codition) {
+    public void choseWorks() {
         try {
             for (WebElement row : listWorks) {
                 String nameWorks = row.getText().strip();
-                if (nameWorks.equals(codition)) {
+                if (nameWorks.equals("fWorks: Prepare for Testing")) {
                     row.click();
                     break;
                 }
@@ -50,14 +53,31 @@ public class createTaskPage {
 
     public void createtask() {
         try {
-            Thread.sleep(1000);
-            dropdown_task.click();
-            Thread.sleep(500);
-            createTask.click();
-            Thread.sleep(1000);
+            if (createTask.isDisplayed()) {
+                createTask.click();
+            } else {
+                dropdown_task.click();
+                Thread.sleep(500);
+                createTask.click();
+                Thread.sleep(1000);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void creatework() {
+        try {
+            if (createWork.isDisplayed()) {
+                createWork.click();
+            } else {
+                dropdown_task.click();
+                Thread.sleep(500);
+                createWork.click();
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

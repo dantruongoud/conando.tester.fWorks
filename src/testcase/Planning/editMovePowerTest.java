@@ -21,7 +21,7 @@ public class editMovePowerTest {
             index.navigation_works.click();
             index.waitForPageLoaded();
 
-            taskPage.choseWorks("Testing sản phẩm");
+            taskPage.choseWorks();
             index.waitForPageLoaded();
 
             if (index.verifyTitle("Tổng quan kế hoạch")) {
@@ -33,7 +33,7 @@ public class editMovePowerTest {
                 edit.chosePower.click();
                 Thread.sleep(1000);
                 edit.savePower.click();
-                
+
                 String noti = index.tagline();
                 if (noti.equals("Bạn không thể xóa hết quản lý của kế hoạch.")) {
                     System.out.println("===================");

@@ -2,6 +2,7 @@ package testcase.Task;
 
 import org.openqa.selenium.WebDriver;
 
+import excelHelpers.excelhelpers;
 import page.Task.*;
 import page.indexPage;
 import setupbase.baseSetup;
@@ -21,26 +22,29 @@ public class createTaskTest {
             WebDriver driver = init.initChromeDriver();
             indexPage index = new indexPage(driver);
             createTaskPage taskPage = new createTaskPage(driver);
-            index.waitForPageLoaded();
+            excelhelpers excel = new excelhelpers();
+            excel.setExcelSheet("Task");
+
             index.login();
             index.navigation_works.click();
             index.waitForPageLoaded();
 
-            taskPage.choseWorks("Testing sản phẩm");
+            taskPage.choseWorks();
 
             taskPage.navigation_task.click();
             index.waitForPageLoaded();
+
             if (index.verifyTitle("Danh sách công việc")) {
                 taskPage.createtask();
-                createTaskTest[] data = {
-                        new createTaskTest(1, ""),
-                        new createTaskTest(2, "Công việc nhóm QC")
-                };
-                for (int i = 0; i < data.length; i++) {
+
+                for (int i = 1; i < 3; i++) {
+
                     System.out.println("===================");
-                    System.out.println("Testcase: " + data[i].testcase);
-                    taskPage.titleTask.sendKeys(data[i].titleTask);
+
+                    System.out.println("Testcase: " + excel.getCellData("TCID", i));
+                    taskPage.titleTask.sendKeys(excel.getCellData("title", i));
                     taskPage.doneTask.click();
+
                     Thread.sleep(1000);
                     String noti = index.tagline();
                     switch (noti) {
@@ -49,7 +53,6 @@ public class createTaskTest {
                             index.passed();
                             break;
                         default:
-                            noti = index.tagline();
                             if (noti.equals("Đã thêm nhóm công việc!")) {
                                 System.out.println(noti);
                                 index.passed();

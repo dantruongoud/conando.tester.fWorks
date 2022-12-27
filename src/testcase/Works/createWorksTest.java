@@ -2,6 +2,7 @@ package testcase.Works;
 
 import org.openqa.selenium.WebDriver;
 
+import excelHelpers.excelhelpers;
 import page.Works.*;
 import page.indexPage;
 import page.Task.createTaskPage;
@@ -15,6 +16,8 @@ public class createWorksTest {
             indexPage index = new indexPage(driver);
             createTaskPage taskPage = new createTaskPage(driver);
             createWorksPage worksPage = new createWorksPage(driver);
+            excelhelpers excel = new excelhelpers();
+            excel.setExcelSheet("Works");
 
             index.waitForPageLoaded();
             index.login();
@@ -22,66 +25,52 @@ public class createWorksTest {
             index.navigation_works.click();
             index.waitForPageLoaded();
 
-            taskPage.choseWorks("Testing sản phẩm");
+            taskPage.choseWorks();
             taskPage.navigation_task.click();
             index.waitForPageLoaded();
-            if (index.verifyTitle("Danh sách công việc")) {
-                taskPage.dropdown_task.click();
-                Thread.sleep(1000);
-                worksPage.worksBtn.click();
-                index.waitForPageLoaded();
+
+            taskPage.creatework();
+            Thread.sleep(1000);
+
+            for (int i = 1; i < 5; i++) {
+
                 System.out.println("===================");
-                System.out.println("Testcase: 1");
+
+                System.out.println("Test Case: " + excel.getCellData("TCID", i));
+                worksPage.titleWorks.sendKeys(excel.getCellData("title", i));
                 worksPage.doneBtn.click();
+                Thread.sleep(1000);
+
                 String noti = index.tagline();
-                if (noti.equals("Nhập tiêu đề của công việc")) {
-                    System.out.println(noti);
-                    index.passed();
-                    worksPage.titleWorks.sendKeys("Tiêu đề công việc");
-                    Thread.sleep(1000);
-                    worksPage.doneBtn.click();
-                    System.out.println("===================");
-                    System.out.println("Testcase: 2");
-                    Thread.sleep(1000);
-                    noti = index.tagline();
-                    if (noti.equals("Nhập thời gian thực hiện của công việc.")) {
+                switch (noti) {
+                    case "Nhập tiêu đề của công việc!":
+                        System.out.println(noti);
+                        index.passed();
+                        break;
+                    case "Nhập thời gian thực hiện của công việc!":
                         System.out.println(noti);
                         index.passed();
                         worksPage.clickchoseDay();
-                        Thread.sleep(1000);
-                        worksPage.doneBtn.click();
-                        System.out.println("===================");
-                        System.out.println("Testcase: 4");
-                        Thread.sleep(1000);
-                        noti = index.tagline();
-                        if (noti.equals("Chọn nhóm của công việc.")) {
+                        worksPage.titleWorks.clear();
+                        break;
+                    case "Chưa chọn nhóm của công việc!":
+                        System.out.println(noti);
+                        index.passed();
+                        worksPage.choseTaskWorks();
+                        worksPage.titleWorks.clear();
+                        break;
+                    default:
+                        if (noti.equals("Đã tạo công việc thành công!")) {
                             System.out.println(noti);
                             index.passed();
-                            worksPage.choseTaskWorks();
-                            worksPage.doneBtn.click();
-                            System.out.println("===================");
-                            System.out.println("Testcase: 5");
-                            Thread.sleep(1000);
-                            noti = index.tagline();
-                            if (noti.equals("Đã tạo công việc thành công!")) {
-                                System.out.println(noti);
-                                index.passed();
-                            } else {
-                                index.failed();
-                            }
                         } else {
+                            System.out.println(noti);
                             index.failed();
                         }
-                    } else {
-                        index.failed();
-                    }
-
-                } else {
-                    index.failed();
+                        break;
                 }
-            } else {
-                index.error_titlePage();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

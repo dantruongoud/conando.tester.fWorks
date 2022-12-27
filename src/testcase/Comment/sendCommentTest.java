@@ -2,6 +2,7 @@ package testcase.Comment;
 
 import org.openqa.selenium.WebDriver;
 
+import excelHelpers.excelhelpers;
 import page.indexPage;
 import page.Comment.sendCommentPage;
 import page.Task.createTaskPage;
@@ -25,6 +26,8 @@ public class sendCommentTest {
             createTaskPage taskPage = new createTaskPage(driver);
             createsubWorksPage subWorks = new createsubWorksPage(driver);
             sendCommentPage sendCmt = new sendCommentPage(driver);
+            excelhelpers excel = new excelhelpers();
+            excel.setExcelSheet("comments");
 
             index.waitForPageLoaded();
             index.login();
@@ -32,7 +35,7 @@ public class sendCommentTest {
             index.navigation_works.click();
             index.waitForPageLoaded();
 
-            taskPage.choseWorks("Testing sản phẩm");
+            taskPage.choseWorks();
             taskPage.navigation_task.click();
             index.waitForPageLoaded();
 
@@ -42,16 +45,11 @@ public class sendCommentTest {
                 sendCmt.navigation_cmt.click();
                 index.waitForPageLoaded();
 
-                sendCommentTest[] data = {
-                        new sendCommentTest(1, ""),
-                        new sendCommentTest(2, "Tôi đã Comment")
-                };
-
-                for (int i = 0; i < data.length; i++) {
+                for (int i = 1; i < 3; i++) {
                     System.out.println("====================");
 
-                    System.out.println("Testcase: " + data[i].testcase);
-                    sendCmt.comment(data[i].cmt);
+                    System.out.println("Testcase: " + excel.getCellData("TCID", i));
+                    sendCmt.comment(excel.getCellData("content", i));
                     Thread.sleep(2000);
 
                     String noti = index.tagline();
@@ -62,7 +60,7 @@ public class sendCommentTest {
                             index.passed();
                             break;
                         default:
-                            if (sendCmt.verifyResult("Tôi đã Comment")) {
+                            if (sendCmt.verifyResult("Cho bình luận phát nha")) {
                                 System.out.println("Comment Success");
                                 index.passed();
                             } else {
@@ -73,11 +71,13 @@ public class sendCommentTest {
 
                     Thread.sleep(1000);
                 }
-                
+
             } else {
                 index.error_titlePage();
             }
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             e.printStackTrace();
         }
     }

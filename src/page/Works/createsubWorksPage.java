@@ -22,7 +22,10 @@ public class createsubWorksPage {
     public WebElement subWorksBtn;
 
     @FindBy(css = "input[placeholder='Nhập tiêu đề công việc']")
-    public WebElement titleWorks_input;
+    private WebElement titleWorks_input;
+
+    @FindBy(tagName = "textarea")
+    private WebElement description_input;
 
     @FindBy(xpath = "//span[contains(text(),'Chọn ngày')]")
     public WebElement choseDay;
@@ -33,22 +36,62 @@ public class createsubWorksPage {
     @FindBy(xpath = "(//button[contains(@type,'button')][contains(text(),'Xác nhận')])[3]")
     public WebElement confirmDay;
 
-    @FindBy(css = ".icon-text.has-text-link.mr-3")
+    @FindBy(xpath = "//span[contains(text(),'Cập nhật')]")
     public WebElement saveBtn;
 
     @FindBy(xpath = "//body[1]/main[1]/section[1]/section[3]/section[1]/section[2]/ul[1]/li[2]/div[1]/ul[2]/li[3]/div[1]/div[1]")
     public WebElement add_user;
+
+    @FindBy(how = How.CSS, using = ".item_name.has-text-info")
+    private List<WebElement> lstSubworks;
 
     public createsubWorksPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
+    public void setText(String title, String description) {
+        try {
+            titleWorks_input.sendKeys(title);
+            description_input.sendKeys(description);
+            Thread.sleep(1000);
+            saveBtn.click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clear() {
+        try {
+            titleWorks_input.clear();
+            description_input.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean verifySubwork(String condition) {
+
+        if (lstSubworks.size() > 0) {
+            for (WebElement row : lstSubworks) {
+                String nameSubworks = row.getText().strip();
+                if (nameSubworks.equals(condition)) {
+                    System.out.println(nameSubworks);
+                    break;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public void choseWorks() {
         try {
             for (WebElement row : listWorks) {
                 String nameWorks = row.getText().strip();
-                if (nameWorks.equals("Tiêu đề công việc")) {
+                if (nameWorks.equals("Lập plan để thực thi")) {
                     row.click();
                     break;
                 }
@@ -60,6 +103,7 @@ public class createsubWorksPage {
 
     public void clickchoseDay() {
         try {
+            choseDay.click();
             Thread.sleep(1000);
             dayStarEnd.click();
             Thread.sleep(1000);

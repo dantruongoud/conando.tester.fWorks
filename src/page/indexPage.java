@@ -63,6 +63,7 @@ public class indexPage {
             String validation = "";
             if (notify.size() > 0) {
                 validation = notify.get(0).getText().strip();
+                System.out.println("Notify: " + validation);
             }
             return validation;
         } catch (Exception e) {
@@ -80,7 +81,7 @@ public class indexPage {
 
             login.click();
             waitForPageLoaded();
-            
+
             chose_corp();
             waitForPageLoaded();
         } catch (Exception e) {

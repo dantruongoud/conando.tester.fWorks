@@ -2,6 +2,7 @@ package testcase.Works;
 
 import org.openqa.selenium.WebDriver;
 
+import excelHelpers.excelhelpers;
 import page.Task.*;
 import page.Works.createsubWorksPage;
 import page.indexPage;
@@ -15,68 +16,59 @@ public class createsubWorksTest {
             indexPage index = new indexPage(driver);
             createTaskPage taskPage = new createTaskPage(driver);
             createsubWorksPage subWorks = new createsubWorksPage(driver);
+            excelhelpers excel = new excelhelpers();
+            excel.setExcelSheet("subWorks");
 
-            index.waitForPageLoaded();
             index.login();
             index.navigation_works.click();
             index.waitForPageLoaded();
-            taskPage.choseWorks("Testing sản phẩm");
+
+            taskPage.choseWorks();
             taskPage.navigation_task.click();
             index.waitForPageLoaded();
+
             if (index.verifyTitle("Danh sách công việc")) {
+
                 subWorks.choseWorks();
                 subWorks.formsubWorks();
 
-                subWorks.saveBtn.click();
-                System.out.println("====================");
-                System.out.println("Testcase: 1");
-                String noti = index.tagline();
-                if (noti.equals("Nhập tiêu đề của công việc")) {
-                    System.out.println(noti);
-                    index.passed();
-                    subWorks.titleWorks_input.sendKeys("Tiêu đề công việc phụ");
+                for (int i = 1; i < 5; i++) {
                     System.out.println("====================");
-                    System.out.println("Testcase: 2");
-                    subWorks.saveBtn.click();
+
+                    System.out.println("Testcase: " + excel.getCellData("TCID", i));
+                    subWorks.setText(excel.getCellData("title", i), excel.getCellData("description", i));
                     Thread.sleep(1000);
-                    noti = index.tagline();
-                    if (noti.equals("Nhập thời gian thực hiện của công việc.")) {
-                        System.out.println(noti);
-                        index.passed();
-                        subWorks.choseDay.click();
-                        subWorks.clickchoseDay();
-                        subWorks.saveBtn.click();
-                        System.out.println("====================");
-                        System.out.println("Testcase: 3");
-                        Thread.sleep(1000);
-                        noti = index.tagline();
-                        if (noti.equals("Chọn người tham gia của công việc.")) {
+
+                    String noti = index.tagline();
+                    switch (noti) {
+                        case "Nhập tiêu đề của công việc":
+                            System.out.println(noti);
+                            index.passed();
+                            subWorks.clear();
+                            break;
+                        case "Nhập thời gian thực hiện của công việc.":
+                            System.out.println(noti);
+                            index.passed();
+                            subWorks.clickchoseDay();
+                            subWorks.clear();
+                            break;
+                        case "Chọn người tham gia của công việc.":
                             System.out.println(noti);
                             index.passed();
                             subWorks.add_user.click();
-                            Thread.sleep(500);
                             index.choseMember("truong");
-                            Thread.sleep(1000);
-                            System.out.println("====================");
-                            System.out.println("Testcase: 4");
-                            subWorks.saveBtn.click();
-                            Thread.sleep(1000);
-                            noti = index.tagline();
-                            if (noti.length() == 0) {
-                                System.out.println("Tạo mới thành công");
+                            subWorks.clear();
+                            break;
+                        default:
+                            if (subWorks.verifySubwork("Công việc phụ số 1")) {
                                 index.passed();
                             } else {
                                 System.out.println(noti);
                                 index.failed();
                             }
-                        } else {
-                            index.failed();
-                        }
-                    } else {
-                        index.failed();
+                            break;
                     }
-                } else {
-                    index.failed();
+                    Thread.sleep(1000);
                 }
             } else {
                 index.error_titlePage();

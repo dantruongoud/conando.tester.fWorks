@@ -22,7 +22,7 @@ public class historyPlanTest {
             index.navigation_works.click();
             index.waitForPageLoaded();
 
-            taskPage.choseWorks("Testing sản phẩm");
+            taskPage.choseWorks();
             index.waitForPageLoaded();
             if (index.verifyTitle("Tổng quan kế hoạch")) {
                 history.getTitleTask();

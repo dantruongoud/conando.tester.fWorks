@@ -2,6 +2,7 @@ package testcase.todolist;
 
 import org.openqa.selenium.WebDriver;
 
+import excelHelpers.excelhelpers;
 import page.indexPage;
 import page.Task.createTaskPage;
 import page.Works.createsubWorksPage;
@@ -17,56 +18,52 @@ public class todolistWorksTest {
             createTaskPage taskPage = new createTaskPage(driver);
             createsubWorksPage subWorks = new createsubWorksPage(driver);
             todolistWorksPage linkTodolist = new todolistWorksPage(driver);
+            excelhelpers excel = new excelhelpers();
+            excel.setExcelSheet("todolist");
 
-            index.waitForPageLoaded();
             index.login();
             index.navigation_works.click();
             index.waitForPageLoaded();
-            taskPage.choseWorks("Testing sản phẩm");
+
+            taskPage.choseWorks();
             taskPage.navigation_task.click();
             index.waitForPageLoaded();
+
             if (index.verifyTitle("Danh sách công việc")) {
                 subWorks.choseWorks();
                 linkTodolist.navigation();
-
-                subWorks.saveBtn.click();
-                System.out.println("====================");
-                System.out.println("Testcase: 1");
-                Thread.sleep(1000);
-                String noti = index.tagline();
-                if (noti.equals("Nhập tiêu đề của Todolist")) {
-                    System.out.println(noti);
-                    index.passed();
-                    linkTodolist.title_input.sendKeys("todolist liên kết");
-                    Thread.sleep(1000);
-                    subWorks.saveBtn.click();
+                for (int i = 1; i < 4; i++) {
                     System.out.println("====================");
-                    System.out.println("Testcase: 2");
+
+                    System.out.println("Testcase: " + excel.getCellData("TCID", i));
+                    linkTodolist.titleSendkeys(excel.getCellData("title", i));
+
                     Thread.sleep(1000);
-                    noti = index.tagline();
-                    if (noti.equals("Chọn ngày tạo Todolist")) {
-                        System.out.println(noti);
-                        index.passed();
-                        Thread.sleep(1000);
-                        subWorks.choseDay.click();
-                        linkTodolist.clickDay();
-                        subWorks.confirmDay.click();
-                        subWorks.saveBtn.click();
-                        Thread.sleep(1000);
-                        System.out.println("====================");
-                        System.out.println("Testcase: 3");
-                        noti = index.tagline();
-                        if (noti.equals("Đã tạo Todolist liên kết với công việc")) {
+
+                    String noti = index.tagline();
+                    switch (noti) {
+                        case "Nhập tiêu đề của Todolist":
                             System.out.println(noti);
                             index.passed();
-                        } else {
-                            index.failed();
-                        }
-                    } else {
-                        index.failed();
+                            linkTodolist.title_input.clear();
+                            break;
+                        case "Chọn ngày tạo Todolist":
+                            System.out.println(noti);
+                            index.passed();
+                            linkTodolist.title_input.clear();
+                            linkTodolist.choseDay();
+                            break;
+                        default:
+                            if (noti.equals("Đã tạo Todolist liên kết với công việc")) {
+                                System.out.println(noti);
+                                index.passed();
+                            } else {
+                                System.out.println(noti);
+                                index.failed();
+                            }
+                            break;
                     }
-                } else {
-                    index.failed();
+                    Thread.sleep(1000);
                 }
             } else {
                 index.error_titlePage();

@@ -2,6 +2,7 @@ package testcase.Planning;
 
 import org.openqa.selenium.WebDriver;
 
+import excelHelpers.excelhelpers;
 import page.indexPage;
 import page.Planning.*;
 import setupbase.baseSetup;
@@ -18,17 +19,13 @@ public class createPlanTest {
 
     public static void main(String[] args) {
         try {
-            
-            createPlanTest[] data = {
-                    new createPlanTest(1, "fWorks: Prepare for Testing", "Đây là dự án cực kỳ quan trọng"),
-                    new createPlanTest(2, "", "Đây là dự án cực kỳ quan trọng"),
-                    new createPlanTest(3, "fWorks: Prepare for Testing", "Đây là dự án cực kỳ quan trọng"),
-            };
 
             baseSetup init = new baseSetup();
             WebDriver driver = init.initChromeDriver();
             indexPage index = new indexPage(driver);
             createPlanPage create = new createPlanPage(driver);
+            excelhelpers excel = new excelhelpers();
+            excel.setExcelSheet("Create Plan");
 
             index.waitForPageLoaded();
             index.login();
@@ -43,13 +40,13 @@ public class createPlanTest {
                 index.add_user.click();
                 create.removeUser();
 
-                for (int i = 0; i < data.length; i++) {
+                for (int i = 1; i < 4; i++) {
 
                     System.out.println("====================");
 
-                    System.out.println("Testcase: " + data[i].testcase);
-                    create.title_input.sendKeys(data[i].title);
-                    create.txaDescription.sendKeys(data[i].description);
+                    System.out.println("Testcase: " + excel.getCellData("TCID", i));
+                    create.title_input.sendKeys(excel.getCellData("title", i));
+                    create.txaDescription.sendKeys(excel.getCellData("description", i));
                     create.donePlan.click();
                     Thread.sleep(1000);
 
@@ -71,8 +68,7 @@ public class createPlanTest {
                             break;
 
                         default:
-                            noti = index.tagline();
-                            if (noti.equals("Đã tạo kế hoạch: fWorks: Prepare for Testing")) {
+                            if (noti.equals("Đã tạo kế hoạch: " + excel.getCellData("title", 3))) {
                                 System.out.println(noti);
                                 index.passed();
                             } else {

@@ -29,7 +29,7 @@ public class editPlanTest {
             index.navigation_works.click();
             index.waitForPageLoaded();
 
-            taskPage.choseWorks("Testing sản phẩm");
+            taskPage.choseWorks();
             index.waitForPageLoaded();
 
             if (index.verifyTitle("Tổng quan kế hoạch")) {
@@ -37,7 +37,7 @@ public class editPlanTest {
                 Thread.sleep(1000);
                 editPlanTest[] data = {
                         new editPlanTest(1, ""),
-                        new editPlanTest(2, "Testing sản phẩm")
+                        new editPlanTest(2, "fWorks: Prepare for Testing")
                 };
                 editPlan.plan_input.clear();
                 for (int i = 0; i < data.length; i++) {
@@ -52,7 +52,6 @@ public class editPlanTest {
                             index.passed();
                             break;
                         default:
-                            noti = index.tagline();
                             if (noti.equals("Đã cập nhật thông tin của dự án.")) {
                                 System.out.println(noti);
                                 index.passed();

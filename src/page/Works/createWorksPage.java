@@ -27,7 +27,7 @@ public class createWorksPage {
     @FindBy(xpath = "//span[contains(text(),'Chọn nhóm công việc')]")
     private WebElement clickChoseTask;
 
-    @FindBy(linkText = "Công việc nhóm QC")
+    @FindBy(linkText = "Thực thi automation đạt chuẩn")
     private WebElement choseTask;
 
     @FindBy(css = "a[class='button is-link is-small']")

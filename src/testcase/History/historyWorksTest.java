@@ -24,7 +24,7 @@ public class historyWorksTest {
             index.navigation_works.click();
             index.waitForPageLoaded();
 
-            taskPage.choseWorks("Testing sản phẩm");
+            taskPage.choseWorks();
             taskPage.navigation_task.click();
             index.waitForPageLoaded();
             if (index.verifyTitle("Danh sách công việc")) {

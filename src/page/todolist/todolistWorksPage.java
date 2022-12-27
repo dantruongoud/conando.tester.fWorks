@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import page.Works.createsubWorksPage;
+
 public class todolistWorksPage {
     public WebDriver driver;
 
@@ -20,6 +22,9 @@ public class todolistWorksPage {
     @FindBy(xpath = "/html/body/main/section/section[3]/section/section[2]/ul/li[2]/div[2]/ul/li[2]/div/div/div[2]/div/table/tbody/tr[6]/td[1]")
     private WebElement dayStarEnd;
 
+    @FindBy(css = ".icon-text.has-text-link.mr-3")
+    private WebElement saveBtn;
+
     public todolistWorksPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -31,6 +36,28 @@ public class todolistWorksPage {
             navigation_todolist.click();
             Thread.sleep(2000);
             createBtn.click();
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void titleSendkeys(String title) {
+        try {
+            title_input.sendKeys(title);
+            saveBtn.click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void choseDay() {
+        try {
+            createsubWorksPage subworks = new createsubWorksPage(driver);
+            subworks.choseDay.click();
+            Thread.sleep(1000);
+            clickDay();
+            subworks.confirmDay.click();
             Thread.sleep(1000);
         } catch (Exception e) {
             e.printStackTrace();
