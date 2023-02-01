@@ -37,38 +37,59 @@ public class createWorksTest {
                 System.out.println("===================");
 
                 System.out.println("Test Case: " + excel.getCellData("TCID", i));
+                worksPage.titleWorks.clear();
+
                 worksPage.titleWorks.sendKeys(excel.getCellData("title", i));
                 worksPage.doneBtn.click();
                 Thread.sleep(1000);
 
+                Boolean passed = false;
                 String noti = index.tagline();
-                switch (noti) {
-                    case "Nhập tiêu đề của công việc!":
-                        System.out.println(noti);
+                for (int j = 0; j < worksPage.tagline.length; j++) {
+                    if (noti.equals(worksPage.tagline[j])) {
+                        passed = true;
+                        index.passed();
+                        if (j == 1)
+                            worksPage.clickchoseDay();
+                        if (j == 2)
+                            worksPage.choseTaskWorks();
+                        break;
+                    } else if (noti.equals(worksPage.tagline[3])) {
+                        passed = true;
                         index.passed();
                         break;
-                    case "Nhập thời gian thực hiện của công việc!":
-                        System.out.println(noti);
-                        index.passed();
-                        worksPage.clickchoseDay();
-                        worksPage.titleWorks.clear();
-                        break;
-                    case "Chưa chọn nhóm của công việc!":
-                        System.out.println(noti);
-                        index.passed();
-                        worksPage.choseTaskWorks();
-                        worksPage.titleWorks.clear();
-                        break;
-                    default:
-                        if (noti.equals("Đã tạo công việc thành công!")) {
-                            System.out.println(noti);
-                            index.passed();
-                        } else {
-                            System.out.println(noti);
-                            index.failed();
-                        }
-                        break;
+                    }
+
                 }
+                if (!passed)
+                    index.failed();
+                // switch (noti) {
+                // case "Nhập tiêu đề của công việc!":
+                // System.out.println(noti);
+                // index.passed();
+                // break;
+                // case "Nhập thời gian thực hiện của công việc!":
+                // System.out.println(noti);
+                // index.passed();
+                // worksPage.clickchoseDay();
+                // worksPage.titleWorks.clear();
+                // break;
+                // case "Chưa chọn nhóm của công việc!":
+                // System.out.println(noti);
+                // index.passed();
+                // worksPage.choseTaskWorks();
+                // worksPage.titleWorks.clear();
+                // break;
+                // default:
+                // if (noti.equals("Đã tạo công việc thành công!")) {
+                // System.out.println(noti);
+                // index.passed();
+                // } else {
+                // System.out.println(noti);
+                // index.failed();
+                // }
+                // break;
+                // }
             }
 
         } catch (Exception e) {

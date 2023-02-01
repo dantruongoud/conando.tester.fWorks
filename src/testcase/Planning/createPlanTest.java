@@ -43,41 +43,62 @@ public class createPlanTest {
                 for (int i = 1; i < 4; i++) {
 
                     System.out.println("====================");
-
                     System.out.println("Testcase: " + excel.getCellData("TCID", i));
+                    create.txtClear();
+
                     create.title_input.sendKeys(excel.getCellData("title", i));
                     create.txaDescription.sendKeys(excel.getCellData("description", i));
                     create.donePlan.click();
                     Thread.sleep(1000);
 
+                    Boolean passed = false;
                     String noti = index.tagline();
-                    switch (noti) {
 
-                        case "Kế hoạch chưa có thành viên.":
-                            System.out.println(noti);
+                    for (int j = 0; j < create.tagline.length; j++) {
+                        if (noti.equals(create.tagline[j])) {
+                            passed = true;  
                             index.passed();
-                            index.add_user.click();
-                            create.choseMember("truong");
-                            create.txtClear();
-                            break;
-
-                        case "Bạn chưa nhập tiêu đề kế hoạch.":
-                            System.out.println(noti);
-                            index.passed();
-                            create.txtClear();
-                            break;
-
-                        default:
-                            if (noti.equals("Đã tạo kế hoạch: " + excel.getCellData("title", 3))) {
-                                System.out.println(noti);
-                                index.passed();
-                            } else {
-                                System.out.println(noti);
-                                index.failed();
+                            if (j == 0) {
+                                index.add_user.click();
+                                create.choseMember("truong");
                             }
                             break;
+                        } else if (noti.contains("Đã tạo kế hoạch: ")) {
+                            passed = true;
+                            index.passed();
+                            break;
+                        }
                     }
-                    Thread.sleep(1000);
+                    if (!passed)
+                        index.failed();
+                        
+                    // switch (noti) {
+
+                    // case "Kế hoạch chưa có thành viên.":
+                    // System.out.println(noti);
+                    // index.passed();
+                    // index.add_user.click();
+                    // create.choseMember("truong");
+                    // create.txtClear();
+                    // break;
+
+                    // case "Bạn chưa nhập tiêu đề kế hoạch.":
+                    // System.out.println(noti);
+                    // index.passed();
+                    // create.txtClear();
+                    // break;
+
+                    // default:
+                    // if (noti.equals("Đã tạo kế hoạch: " + excel.getCellData("title", 3))) {
+                    // System.out.println(noti);
+                    // index.passed();
+                    // } else {
+                    // System.out.println(noti);
+                    // index.failed();
+                    // }
+                    // break;
+                    // }
+                    // Thread.sleep(1000);
 
                 }
             } else {

@@ -7,6 +7,12 @@ import org.openqa.selenium.support.PageFactory;
 
 public class createWorksPage {
 
+    public String[] tagline = {
+            "Nhập tiêu đề của công việc!",
+            "Nhập thời gian thực hiện của công việc!",
+            "Chưa chọn nhóm của công việc!",
+            "Đã tạo công việc thành công!"
+    };
     public WebDriver driver;
 
     @FindBy(css = ".button.is-small.is-rounded.is-success")

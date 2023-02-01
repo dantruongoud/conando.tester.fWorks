@@ -63,7 +63,7 @@ public class indexPage {
             String validation = "";
             if (notify.size() > 0) {
                 validation = notify.get(0).getText().strip();
-                System.out.println("Notify: " + validation);
+                System.out.println("Notify System: " + validation);
             }
             return validation;
         } catch (Exception e) {

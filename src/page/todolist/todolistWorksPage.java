@@ -8,7 +8,14 @@ import org.openqa.selenium.support.PageFactory;
 import page.Works.createsubWorksPage;
 
 public class todolistWorksPage {
-    public WebDriver driver;
+
+    public String[] tagline = {
+            "Nhập tiêu đề của Todolist",
+            "Chọn ngày tạo Todolist",
+            "Đã tạo Todolist liên kết với công việc"
+    };
+
+    WebDriver driver;
 
     @FindBy(xpath = "//a[@class='has-text-info'][contains(text(),'Todolist liên kết')]")
     private WebElement navigation_todolist;

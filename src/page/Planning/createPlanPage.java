@@ -11,6 +11,10 @@ import org.openqa.selenium.support.PageFactory;
 
 public class createPlanPage {
 
+    public String[] tagline = {
+            "Kế hoạch chưa có thành viên.",
+            "Bạn chưa nhập tiêu đề kế hoạch."
+    };
     public WebDriver driver;
 
     @FindBy(xpath = "//a[@class='button is-info is-fullwidth']")
